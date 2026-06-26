@@ -1,28 +1,17 @@
-// ===============================
-// CandyStock - Versión 1
-// Productos + Stock + Movimientos
-// ===============================
-
 let productos = JSON.parse(localStorage.getItem("candystock_productos")) || [];
 let movimientos = JSON.parse(localStorage.getItem("candystock_movimientos")) || [];
 
 const productoForm = document.getElementById("productoForm");
 const movimientoForm = document.getElementById("movimientoForm");
-
 const tablaProductos = document.getElementById("tablaProductos");
 const tablaMovimientos = document.getElementById("tablaMovimientos");
 const tablaPedidos = document.getElementById("tablaPedidos");
-
 const productoMovimiento = document.getElementById("productoMovimiento");
 
 const totalProductos = document.getElementById("totalProductos");
 const stockTotal = document.getElementById("stockTotal");
 const stockBajo = document.getElementById("stockBajo");
 const valorInventario = document.getElementById("valorInventario");
-
-// ===============================
-// PRODUCTOS
-// ===============================
 
 productoForm.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -41,10 +30,6 @@ productoForm.addEventListener("submit", function (e) {
   productoForm.reset();
   renderizarTodo();
 });
-
-// ===============================
-// MOVIMIENTOS
-// ===============================
 
 movimientoForm.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -78,10 +63,10 @@ movimientoForm.addEventListener("submit", function (e) {
   }
 
   movimientos.unshift({
-    fecha: new Date().toLocaleString(),
+    fecha: new Date().toLocaleString("es-AR"),
     producto: producto.nombre,
-    tipo,
-    cantidad,
+    tipo: tipo,
+    cantidad: cantidad,
     detalle: detalle || "-"
   });
 
@@ -90,18 +75,10 @@ movimientoForm.addEventListener("submit", function (e) {
   renderizarTodo();
 });
 
-// ===============================
-// GUARDADO
-// ===============================
-
 function guardarDatos() {
   localStorage.setItem("candystock_productos", JSON.stringify(productos));
   localStorage.setItem("candystock_movimientos", JSON.stringify(movimientos));
 }
-
-// ===============================
-// RENDER GENERAL
-// ===============================
 
 function renderizarTodo() {
   renderDashboard();
@@ -109,10 +86,6 @@ function renderizarTodo() {
   renderMovimientos();
   renderPedidos();
 }
-
-// ===============================
-// DASHBOARD
-// ===============================
 
 function renderDashboard() {
   const stockGeneral = productos.reduce((acc, p) => acc + p.stock, 0);
@@ -124,10 +97,6 @@ function renderDashboard() {
   stockBajo.textContent = productosBajos;
   valorInventario.textContent = "$" + valorTotal.toLocaleString("es-AR");
 }
-
-// ===============================
-// TABLA PRODUCTOS
-// ===============================
 
 function renderProductos() {
   tablaProductos.innerHTML = "";
@@ -173,10 +142,6 @@ function renderProductos() {
   });
 }
 
-// ===============================
-// TABLA MOVIMIENTOS
-// ===============================
-
 function renderMovimientos() {
   tablaMovimientos.innerHTML = "";
 
@@ -201,10 +166,6 @@ function renderMovimientos() {
     `;
   });
 }
-
-// ===============================
-// PEDIDO SUGERIDO
-// ===============================
 
 function renderPedidos() {
   tablaPedidos.innerHTML = "";
@@ -233,9 +194,5 @@ function renderPedidos() {
     `;
   });
 }
-
-// ===============================
-// INICIO
-// ===============================
 
 renderizarTodo();
