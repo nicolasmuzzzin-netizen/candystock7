@@ -1,326 +1,333 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CandyStock | Control de Stock</title>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CandyStock</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      background: #0f0f14;
-      color: #ffffff;
-      padding: 20px;
-    }
-
-    header {
-      margin-bottom: 25px;
-    }
-
-    header h1 {
-      color: #ff2fa6;
-      font-size: 32px;
-    }
-
-    header p {
-      color: #b8b8c7;
-      margin-top: 6px;
-    }
-
-    .dashboard {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-
-    .card {
-      background: #1a1a24;
-      border: 1px solid #2d2d3a;
-      border-radius: 14px;
-      padding: 18px;
-    }
-
-    .card h3 {
-      color: #b8b8c7;
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-
-    .card strong {
-      font-size: 28px;
-      color: #ffffff;
-    }
-
-    .section {
-      background: #171721;
-      border: 1px solid #2b2b38;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 25px;
-    }
-
-    .section h2 {
-      margin-bottom: 15px;
-      color: #ff2fa6;
-      font-size: 22px;
-    }
-
-    form {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    input, select, button {
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      font-size: 15px;
-    }
-
-    input, select {
-      background: #252536;
-      color: #ffffff;
-      border: 1px solid #3a3a4d;
-    }
-
-    button {
-      background: #ff2fa6;
-      color: #ffffff;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #e02694;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      overflow: hidden;
-    }
-
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #2f2f3f;
-      text-align: left;
-      font-size: 14px;
-    }
-
-    th {
-      color: #ff2fa6;
-      background: #20202d;
-    }
-
-    td {
-      color: #e8e8f0;
-    }
-
-    .badge {
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-
-    .ok {
-      background: #143d2a;
-      color: #5cff9d;
-    }
-
-    .low {
-      background: #4a3210;
-      color: #ffbd4a;
-    }
-
-    .danger {
-      background: #4a1414;
-      color: #ff6b6b;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .secondary {
-      background: #303044;
-    }
-
-    .secondary:hover {
-      background: #3c3c55;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 30px;
-      color: #777;
-      font-size: 13px;
-    }
-
-    @media (max-width: 700px) {
-      body {
-        padding: 12px;
-      }
-
-      header h1 {
-        font-size: 26px;
-      }
-
-      table {
-        font-size: 12px;
-      }
-
-      th, td {
-        padding: 9px;
-      }
-    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#0f0f14;color:#fff;padding:20px}
+    h1{color:#ff2fa6;margin-bottom:5px}
+    p{color:#aaa;margin-bottom:20px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-bottom:20px}
+    .card,.section{background:#1a1a24;border:1px solid #303044;border-radius:14px;padding:18px;margin-bottom:20px}
+    .card h3{font-size:14px;color:#aaa;margin-bottom:8px}
+    .card strong{font-size:28px}
+    h2{color:#ff2fa6;margin-bottom:15px}
+    form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:15px}
+    input,select,button{padding:12px;border-radius:10px;border:0;font-size:15px}
+    input,select{background:#28283a;color:#fff;border:1px solid #444}
+    button{background:#ff2fa6;color:#fff;font-weight:bold;cursor:pointer}
+    button:hover{background:#e02694}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border-bottom:1px solid #333;padding:10px;text-align:left;font-size:14px}
+    th{color:#ff2fa6;background:#222233}
+    .ok{color:#5cff9d}
+    .low{color:#ffbd4a}
+    .danger{color:#ff6b6b}
+    .btn-danger{background:#9b1c1c}
+    .btn-small{padding:7px 10px;font-size:12px}
+    @media(max-width:700px){body{padding:12px}table{font-size:12px;display:block;overflow-x:auto}}
   </style>
 </head>
-
 <body>
-  <header>
-    <h1>CandyStock</h1>
-    <p>Sistema rápido para controlar productos, stock, entradas, salidas y pedidos.</p>
-  </header>
 
-  <section class="dashboard">
-    <div class="card">
-      <h3>Productos cargados</h3>
-      <strong id="totalProductos">0</strong>
-    </div>
+  <h1>CandyStock</h1>
+  <p>Sistema rápido para medir consumo, controlar stock y generar pedidos.</p>
 
-    <div class="card">
-      <h3>Stock total</h3>
-      <strong id="stockTotal">0</strong>
-    </div>
+  <div class="grid">
+    <div class="card"><h3>Productos</h3><strong id="totalProductos">0</strong></div>
+    <div class="card"><h3>Stock total</h3><strong id="stockTotal">0</strong></div>
+    <div class="card"><h3>Stock bajo</h3><strong id="stockBajo">0</strong></div>
+    <div class="card"><h3>Valor inventario</h3><strong id="valorInventario">$0</strong></div>
+  </div>
 
-    <div class="card">
-      <h3>Stock bajo</h3>
-      <strong id="stockBajo">0</strong>
-    </div>
-
-    <div class="card">
-      <h3>Valor estimado</h3>
-      <strong id="valorInventario">$0</strong>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>Cargar producto</h2>
-
-    <form id="productoForm">
-      <input type="text" id="nombreProducto" placeholder="Producto" required />
-      <input type="text" id="categoriaProducto" placeholder="Categoría" required />
-      <input type="number" id="stockInicial" placeholder="Stock inicial" min="0" required />
-      <input type="number" id="stockMinimo" placeholder="Stock mínimo" min="0" required />
-      <input type="number" id="precioCompra" placeholder="Precio compra" min="0" required />
-      <button type="submit">Agregar producto</button>
+  <div class="section">
+    <h2>1. Cargar producto</h2>
+    <form id="formProducto">
+      <input id="nombre" placeholder="Producto" required>
+      <input id="categoria" placeholder="Categoría" required>
+      <input id="stock" type="number" placeholder="Stock actual" required>
+      <input id="minimo" type="number" placeholder="Stock mínimo" required>
+      <input id="precio" type="number" placeholder="Precio compra" required>
+      <button>Agregar producto</button>
     </form>
-  </section>
+  </div>
 
-  <section class="section">
-    <h2>Registrar movimiento</h2>
-
-    <form id="movimientoForm">
-      <select id="productoMovimiento" required>
-        <option value="">Seleccionar producto</option>
-      </select>
-
-      <select id="tipoMovimiento" required>
-        <option value="">Tipo de movimiento</option>
-        <option value="entrada">Entrada / Compra</option>
-        <option value="salida">Salida / Consumo</option>
-        <option value="ajuste">Ajuste</option>
-      </select>
-
-      <input type="number" id="cantidadMovimiento" placeholder="Cantidad" min="1" required />
-      <input type="text" id="detalleMovimiento" placeholder="Detalle / Evento / Proveedor" />
-      <button type="submit">Registrar movimiento</button>
+  <div class="section">
+    <h2>2. Cargar evento</h2>
+    <form id="formEvento">
+      <input id="eventoNombre" placeholder="Nombre del evento" required>
+      <input id="eventoFecha" type="date" required>
+      <input id="eventoAsistentes" type="number" placeholder="Asistentes" required>
+      <button>Guardar evento</button>
     </form>
-  </section>
+  </div>
 
-  <section class="section">
-    <h2>Inventario actual</h2>
+  <div class="section">
+    <h2>3. Registrar consumo por evento</h2>
+    <form id="formConsumo">
+      <select id="consumoEvento" required></select>
+      <select id="consumoProducto" required></select>
+      <input id="consumoCantidad" type="number" placeholder="Cantidad consumida" required>
+      <button>Registrar consumo</button>
+    </form>
+  </div>
 
+  <div class="section">
+    <h2>4. Inventario actual</h2>
     <table>
       <thead>
         <tr>
-          <th>Producto</th>
-          <th>Categoría</th>
-          <th>Stock</th>
-          <th>Mínimo</th>
-          <th>Precio</th>
-          <th>Estado</th>
+          <th>Producto</th><th>Categoría</th><th>Stock</th><th>Mínimo</th><th>Precio</th><th>Estado</th><th>Acción</th>
         </tr>
       </thead>
-
-      <tbody id="tablaProductos">
-        <tr>
-          <td colspan="6">Todavía no hay productos cargados.</td>
-        </tr>
-      </tbody>
+      <tbody id="tablaProductos"></tbody>
     </table>
-  </section>
+  </div>
 
-  <section class="section">
-    <h2>Movimientos recientes</h2>
-
+  <div class="section">
+    <h2>5. Eventos cargados</h2>
     <table>
       <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>Producto</th>
-          <th>Tipo</th>
-          <th>Cantidad</th>
-          <th>Detalle</th>
-        </tr>
+        <tr><th>Evento</th><th>Fecha</th><th>Asistentes</th></tr>
       </thead>
-
-      <tbody id="tablaMovimientos">
-        <tr>
-          <td colspan="5">Todavía no hay movimientos registrados.</td>
-        </tr>
-      </tbody>
+      <tbody id="tablaEventos"></tbody>
     </table>
-  </section>
+  </div>
 
-  <section class="section">
-    <h2>Pedido sugerido</h2>
+  <div class="section">
+    <h2>6. Consumos registrados</h2>
+    <table>
+      <thead>
+        <tr><th>Fecha</th><th>Evento</th><th>Producto</th><th>Cantidad</th></tr>
+      </thead>
+      <tbody id="tablaConsumos"></tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2>7. Pedido inteligente</h2>
+    <form id="formPedido">
+      <input id="asistentesEsperados" type="number" placeholder="Asistentes esperados próximo evento" required>
+      <button>Calcular pedido</button>
+    </form>
 
     <table>
       <thead>
         <tr>
           <th>Producto</th>
           <th>Stock actual</th>
-          <th>Stock mínimo</th>
-          <th>Sugerencia</th>
+          <th>Consumo estimado</th>
+          <th>Comprar sugerido</th>
+          <th>Costo aprox.</th>
         </tr>
       </thead>
-
-      <tbody id="tablaPedidos">
-        <tr>
-          <td colspan="4">Sin productos para sugerir pedidos.</td>
-        </tr>
-      </tbody>
+      <tbody id="tablaPedido"></tbody>
     </table>
-  </section>
+  </div>
 
-  <footer>
-    CandyStock · Versión inicial para control rápido de stock
-  </footer>
+<script>
+let productos = JSON.parse(localStorage.getItem("cs_productos")) || [];
+let eventos = JSON.parse(localStorage.getItem("cs_eventos")) || [];
+let consumos = JSON.parse(localStorage.getItem("cs_consumos")) || [];
 
-  <script src="app.js"></script>
+const $ = id => document.getElementById(id);
+
+function guardar(){
+  localStorage.setItem("cs_productos", JSON.stringify(productos));
+  localStorage.setItem("cs_eventos", JSON.stringify(eventos));
+  localStorage.setItem("cs_consumos", JSON.stringify(consumos));
+}
+
+$("formProducto").addEventListener("submit", e=>{
+  e.preventDefault();
+  productos.push({
+    id: Date.now(),
+    nombre:$("nombre").value.trim(),
+    categoria:$("categoria").value.trim(),
+    stock:Number($("stock").value),
+    minimo:Number($("minimo").value),
+    precio:Number($("precio").value)
+  });
+  guardar();
+  e.target.reset();
+  render();
+});
+
+$("formEvento").addEventListener("submit", e=>{
+  e.preventDefault();
+  eventos.push({
+    id: Date.now(),
+    nombre:$("eventoNombre").value.trim(),
+    fecha:$("eventoFecha").value,
+    asistentes:Number($("eventoAsistentes").value)
+  });
+  guardar();
+  e.target.reset();
+  render();
+});
+
+$("formConsumo").addEventListener("submit", e=>{
+  e.preventDefault();
+
+  const eventoId = Number($("consumoEvento").value);
+  const productoId = Number($("consumoProducto").value);
+  const cantidad = Number($("consumoCantidad").value);
+
+  const evento = eventos.find(x=>x.id===eventoId);
+  const producto = productos.find(x=>x.id===productoId);
+
+  if(!evento || !producto) return alert("Falta seleccionar evento o producto.");
+  if(producto.stock < cantidad) return alert("Stock insuficiente.");
+
+  producto.stock -= cantidad;
+
+  consumos.unshift({
+    id: Date.now(),
+    fecha: new Date().toLocaleString("es-AR"),
+    eventoId,
+    evento: evento.nombre,
+    asistentes: evento.asistentes,
+    productoId,
+    producto: producto.nombre,
+    cantidad
+  });
+
+  guardar();
+  e.target.reset();
+  render();
+});
+
+$("formPedido").addEventListener("submit", e=>{
+  e.preventDefault();
+  calcularPedido(Number($("asistentesEsperados").value));
+});
+
+function eliminarProducto(id){
+  if(!confirm("¿Eliminar producto?")) return;
+  productos = productos.filter(p=>p.id!==id);
+  guardar();
+  render();
+}
+
+function render(){
+  renderDashboard();
+  renderProductos();
+  renderEventos();
+  renderConsumos();
+  renderSelects();
+}
+
+function renderDashboard(){
+  $("totalProductos").textContent = productos.length;
+  $("stockTotal").textContent = productos.reduce((a,p)=>a+p.stock,0);
+  $("stockBajo").textContent = productos.filter(p=>p.stock<=p.minimo).length;
+  $("valorInventario").textContent = "$" + productos.reduce((a,p)=>a+(p.stock*p.precio),0).toLocaleString("es-AR");
+}
+
+function renderProductos(){
+  if(productos.length===0){
+    $("tablaProductos").innerHTML = `<tr><td colspan="7">Sin productos cargados.</td></tr>`;
+    return;
+  }
+
+  $("tablaProductos").innerHTML = productos.map(p=>{
+    let estado = `<span class="ok">OK</span>`;
+    if(p.stock<=p.minimo) estado = `<span class="low">BAJO</span>`;
+    if(p.stock===0) estado = `<span class="danger">SIN STOCK</span>`;
+
+    return `
+      <tr>
+        <td>${p.nombre}</td>
+        <td>${p.categoria}</td>
+        <td>${p.stock}</td>
+        <td>${p.minimo}</td>
+        <td>$${p.precio.toLocaleString("es-AR")}</td>
+        <td>${estado}</td>
+        <td><button class="btn-danger btn-small" onclick="eliminarProducto(${p.id})">Eliminar</button></td>
+      </tr>
+    `;
+  }).join("");
+}
+
+function renderEventos(){
+  if(eventos.length===0){
+    $("tablaEventos").innerHTML = `<tr><td colspan="3">Sin eventos cargados.</td></tr>`;
+    return;
+  }
+
+  $("tablaEventos").innerHTML = eventos.map(e=>`
+    <tr>
+      <td>${e.nombre}</td>
+      <td>${e.fecha}</td>
+      <td>${e.asistentes}</td>
+    </tr>
+  `).join("");
+}
+
+function renderConsumos(){
+  if(consumos.length===0){
+    $("tablaConsumos").innerHTML = `<tr><td colspan="4">Sin consumos registrados.</td></tr>`;
+    return;
+  }
+
+  $("tablaConsumos").innerHTML = consumos.map(c=>`
+    <tr>
+      <td>${c.fecha}</td>
+      <td>${c.evento}</td>
+      <td>${c.producto}</td>
+      <td>${c.cantidad}</td>
+    </tr>
+  `).join("");
+}
+
+function renderSelects(){
+  $("consumoEvento").innerHTML = `<option value="">Seleccionar evento</option>` +
+    eventos.map(e=>`<option value="${e.id}">${e.nombre} - ${e.asistentes} asistentes</option>`).join("");
+
+  $("consumoProducto").innerHTML = `<option value="">Seleccionar producto</option>` +
+    productos.map(p=>`<option value="${p.id}">${p.nombre} - Stock ${p.stock}</option>`).join("");
+}
+
+function calcularPedido(asistentesEsperados){
+  if(productos.length===0){
+    $("tablaPedido").innerHTML = `<tr><td colspan="5">No hay productos cargados.</td></tr>`;
+    return;
+  }
+
+  const filas = productos.map(p=>{
+    const consumosProducto = consumos.filter(c=>c.productoId===p.id);
+
+    let consumoPorPersona = 0;
+
+    if(consumosProducto.length > 0){
+      const totalConsumo = consumosProducto.reduce((a,c)=>a+c.cantidad,0);
+      const totalAsistentes = consumosProducto.reduce((a,c)=>a+c.asistentes,0);
+      consumoPorPersona = totalAsistentes > 0 ? totalConsumo / totalAsistentes : 0;
+    }
+
+    const consumoEstimado = Math.ceil(consumoPorPersona * asistentesEsperados);
+    const stockSeguridad = p.minimo;
+    const comprar = Math.max((consumoEstimado + stockSeguridad) - p.stock, 0);
+    const costo = comprar * p.precio;
+
+    return `
+      <tr>
+        <td>${p.nombre}</td>
+        <td>${p.stock}</td>
+        <td>${consumoEstimado}</td>
+        <td><strong>${comprar}</strong></td>
+        <td>$${costo.toLocaleString("es-AR")}</td>
+      </tr>
+    `;
+  }).join("");
+
+  $("tablaPedido").innerHTML = filas;
+}
+
+render();
+</script>
+
 </body>
 </html>
