@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CandyStock | Control de Stock</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0f0f14;
+      color: #ffffff;
+      padding: 20px;
+    }
+
+    header {
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      color: #ff2fa6;
+      font-size: 32px;
+    }
+
+    header p {
+      color: #b8b8c7;
+      margin-top: 6px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: #1a1a24;
+      border: 1px solid #2d2d3a;
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .card h3 {
+      color: #b8b8c7;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .card strong {
+      font-size: 28px;
+      color: #ffffff;
+    }
+
+    .section {
+      background: #171721;
+      border: 1px solid #2b2b38;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .section h2 {
+      margin-bottom: 15px;
+      color: #ff2fa6;
+      font-size: 22px;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    input, select, button {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+    }
+
+    input, select {
+      background: #252536;
+      color: #ffffff;
+      border: 1px solid #3a3a4d;
+    }
+
+    button {
+      background: #ff2fa6;
+      color: #ffffff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e02694;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #2f2f3f;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      color: #ff2fa6;
+      background: #20202d;
+    }
+
+    td {
+      color: #e8e8f0;
+    }
+
+    .badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .ok {
+      background: #143d2a;
+      color: #5cff9d;
+    }
+
+    .low {
+      background: #4a3210;
+      color: #ffbd4a;
+    }
+
+    .danger {
+      background: #4a1414;
+      color: #ff6b6b;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .secondary {
+      background: #303044;
+    }
+
+    .secondary:hover {
+      background: #3c3c55;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 12px;
+      }
+
+      header h1 {
+        font-size: 26px;
+      }
+
+      table {
+        font-size: 12px;
+      }
+
+      th, td {
+        padding: 9px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>CandyStock</h1>
+    <p>Sistema rápido para controlar productos, stock, entradas, salidas y pedidos.</p>
+  </header>
+
+  <section class="dashboard">
+    <div class="card">
+      <h3>Productos cargados</h3>
+      <strong id="totalProductos">0</strong>
+    </div>
+
+    <div class="card">
+      <h3>Stock total</h3>
+      <strong id="stockTotal">0</strong>
+    </div>
+
+    <div class="card">
+      <h3>Stock bajo</h3>
+      <strong id="stockBajo">0</strong>
+    </div>
+
+    <div class="card">
+      <h3>Valor estimado</h3>
+      <strong id="valorInventario">$0</strong>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Cargar producto</h2>
+
+    <form id="productoForm">
+      <input type="text" id="nombreProducto" placeholder="Producto" required />
+      <input type="text" id="categoriaProducto" placeholder="Categoría" required />
+      <input type="number" id="stockInicial" placeholder="Stock inicial" min="0" required />
+      <input type="number" id="stockMinimo" placeholder="Stock mínimo" min="0" required />
+      <input type="number" id="precioCompra" placeholder="Precio compra" min="0" required />
+      <button type="submit">Agregar producto</button>
+    </form>
+  </section>
+
+  <section class="section">
+    <h2>Registrar movimiento</h2>
+
+    <form id="movimientoForm">
+      <select id="productoMovimiento" required>
+        <option value="">Seleccionar producto</option>
+      </select>
+
+      <select id="tipoMovimiento" required>
+        <option value="">Tipo de movimiento</option>
+        <option value="entrada">Entrada / Compra</option>
+        <option value="salida">Salida / Consumo</option>
+        <option value="ajuste">Ajuste</option>
+      </select>
+
+      <input type="number" id="cantidadMovimiento" placeholder="Cantidad" min="1" required />
+      <input type="text" id="detalleMovimiento" placeholder="Detalle / Evento / Proveedor" />
+      <button type="submit">Registrar movimiento</button>
+    </form>
+  </section>
+
+  <section class="section">
+    <h2>Inventario actual</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Categoría</th>
+          <th>Stock</th>
+          <th>Mínimo</th>
+          <th>Precio</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+
+      <tbody id="tablaProductos">
+        <tr>
+          <td colspan="6">Todavía no hay productos cargados.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <h2>Movimientos recientes</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Producto</th>
+          <th>Tipo</th>
+          <th>Cantidad</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+
+      <tbody id="tablaMovimientos">
+        <tr>
+          <td colspan="5">Todavía no hay movimientos registrados.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <h2>Pedido sugerido</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Stock actual</th>
+          <th>Stock mínimo</th>
+          <th>Sugerencia</th>
+        </tr>
+      </thead>
+
+      <tbody id="tablaPedidos">
+        <tr>
+          <td colspan="4">Sin productos para sugerir pedidos.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    CandyStock · Versión inicial para control rápido de stock
+  </footer>
+
+  <script>
+    // Módulo 2: lógica de productos, movimientos y guardado.
+    // Lo agregamos en el próximo paso.
+  </script>
+</body>
+</html>
