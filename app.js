@@ -39,6 +39,160 @@ productoForm.addEventListener("submit", function (e) {
     productoForm.reset();
 
     renderizar();
+    // ========================================
+// MÓDULO 3
+// Movimientos de Stock
+// ========================================
+
+let movimientos =
+JSON.parse(localStorage.getItem("candystock_movimientos")) || [];
+
+const movimientoForm =
+document.getElementById("movimientoForm");
+
+const tablaMovimientos =
+document.getElementById("tablaMovimientos");
+
+movimientoForm.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+    const productoID =
+        Number(document.getElementById("productoMovimiento").value);
+
+    const tipo =
+        document.getElementById("tipoMovimiento").value;
+
+    const cantidad =
+        Number(document.getElementById("cantidadMovimiento").value);
+
+    const detalle =
+        document.getElementById("detalleMovimiento").value;
+
+    const producto =
+        productos.find(p=>p.id===productoID);
+
+    if(!producto){
+
+        alert("Seleccione un producto");
+
+        return;
+
+    }
+
+    if(tipo==="entrada"){
+
+        producto.stock += cantidad;
+
+    }
+
+    if(tipo==="salida"){
+
+        if(producto.stock<cantidad){
+
+            alert("Stock insuficiente");
+
+            return;
+
+        }
+
+        producto.stock -= cantidad;
+
+    }
+
+    if(tipo==="ajuste"){
+
+        producto.stock=cantidad;
+
+    }
+
+    movimientos.unshift({
+
+        fecha:new Date().toLocaleString(),
+
+        producto:producto.nombre,
+
+        tipo,
+
+        cantidad,
+
+        detalle
+
+    });
+
+    guardar();
+
+    guardarMovimientos();
+
+    renderizar();
+
+    renderizarMovimientos();
+
+    movimientoForm.reset();
+
+});
+
+function guardarMovimientos(){
+
+    localStorage.setItem(
+
+        "candystock_movimientos",
+
+        JSON.stringify(movimientos)
+
+    );
+
+}
+
+function renderizarMovimientos(){
+
+    tablaMovimientos.innerHTML="";
+
+    if(movimientos.length===0){
+
+        tablaMovimientos.innerHTML=`
+
+        <tr>
+
+            <td colspan="5">
+
+                Sin movimientos registrados.
+
+            </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+    movimientos.forEach(m=>{
+
+        tablaMovimientos.innerHTML+=`
+
+        <tr>
+
+            <td>${m.fecha}</td>
+
+            <td>${m.producto}</td>
+
+            <td>${m.tipo}</td>
+
+            <td>${m.cantidad}</td>
+
+            <td>${m.detalle}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+renderizarMovimientos();
 
 });
 
